@@ -26,7 +26,7 @@ log "Check Initiated"
 if [ -f $ip_file ]; then
     old_ip=$(cat $ip_file)
     if [ $ip == $old_ip ]; then
-        echo "IP has not changed."
+        echo "$(date): IP has not changed."
         exit 0
     fi
 fi
@@ -46,10 +46,10 @@ update=$(curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zone_identi
 if [[ $update == *"\"success\":false"* ]]; then
     message="API UPDATE FAILED. DUMPING RESULTS:\n$update"
     log "$message"
-    echo -e "$message"
+    echo -e "$(date) $message"
     exit 1
 else
-    message="IP changed to: $ip"
+    message="$(date): IP changed to: $ip"
     echo "$ip" > $ip_file
     log "$message"
     echo "$message"
